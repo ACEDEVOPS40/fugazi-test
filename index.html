@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="description"
+        content="ALPHA is an AI-powered trading analytics for binary options. Predict digits with machine learning-inspired algorithms.">
+    <meta name="keywords" content="trading, binary options, digit prediction, AI, quantum, Deriv">
+    <meta name="author" content="ALPHA ANALYSIS TOOL">
+    <meta name="robots" content="index, follow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ALPHA · AI Analysis Tool</title>
+    <!-- BRAND MATCHING FAVICON: Wolf head emblem (same as ALPHA logo) -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpolygon points='10,9 15,17 8,22 13,25 18,23 23,25 28,22 21,17 26,9 18,14' stroke='%230D7C7C' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round' fill='none' /%3E%3Ccircle cx='15' cy='19' r='1.3' fill='%230D7C7C' /%3E%3Ccircle cx='21' cy='19' r='1.3' fill='%230D7C7C' /%3E%3Cpolygon points='17,22.5 19,22.5 18,24' fill='%230D7C7C' /%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-theme">
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ========== LOGIN PAGE ========== -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="top-selectors">
+                <div class="selector-group"><i class="fas fa-globe"></i><select id="countrySelect">
+                        <option value="us">🇺🇸 US</option>
+                        <option value="gb">🇬🇧 UK</option>
+                        <option value="de">🇩🇪 DE</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="in">🇮🇳 IN</option>
+                    </select></div>
+                <div class="selector-group"><i class="fas fa-language"></i><select id="languageSelect">
+                        <option value="en">EN</option>
+                        <option value="es">ES</option>
+                        <option value="de">DE</option>
+                        <option value="fr">FR</option>
+                        <option value="zh">中文</option>
+                    </select></div>
+            </div>
+
+            <div class="logo">
+                <svg width="70" height="70" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    role="img" aria-label="ALPHA wolf logo">
+                    <title>ALPHA – Alpha Traders</title>
+
+                    <!-- Wolf head outline (geometric, symmetrical) -->
+                    <polygon points="10,9 15,17 8,22 13,25 18,23 23,25 28,22 21,17 26,9 18,14" stroke="#0D7C7C"
+                        stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none" />
+
+                    <!-- Inner ear details -->
+                    <line x1="11" y1="10" x2="14" y2="15" stroke="#0D7C7C" stroke-width="2.5" stroke-linecap="round" />
+                    <line x1="25" y1="10" x2="22" y2="15" stroke="#0D7C7C" stroke-width="2.5" stroke-linecap="round" />
+
+                    <!-- Eyes (focused, confident) -->
+                    <circle cx="15" cy="19" r="1.3" fill="#0D7C7C" />
+                    <circle cx="21" cy="19" r="1.3" fill="#0D7C7C" />
+
+                    <!-- Nose -->
+                    <polygon points="17,22.5 19,22.5 18,24" fill="#0D7C7C" stroke="none" />
+                </svg>
+                <span class="brand">ALPHA Traders Analysis Tool</span>
+            </div>
+            <div class="tagline"><i class="fas fa-diagram-project"></i>  Be an Alpha Trader . Trade with confidence</div>
+            <form id="loginForm">
+                <div class="form-group"><label for="username"><i class="far fa-user-circle"></i> <span
+                            data-i18n="username">Username</span></label><input type="text" id="username"
+                        class="form-control" placeholder="Enter your username" autocomplete="off"></div>
+                <div class="form-group password-group"><label for="password"><i class="fas fa-key"></i> <span
+                            data-i18n="password">Password</span></label>
+                    <div class="password-wrapper"><input type="password" id="password" class="form-control"
+                            placeholder="Enter password"><i class="fas fa-eye-slash toggle-password"
+                            id="togglePassword"></i></div>
+                </div>
+                <div class="terms-group"><label class="checkbox-container"><input type="checkbox"
+                            id="termsCheckbox"><span class="checkmark"></span><span class="terms-text"
+                            data-i18n="terms">I agree to the <a href="#" id="termsLink">Terms of Service</a> and <a
+                                href="#" id="privacyLink">Privacy</a></span></label></div>
+                <button type="submit" class="login-btn"><i class="fas fa-lock"></i> <span data-i18n="access">Access
+                        analysis tool</span></button>
+            </form>
+            <div class="wa-buttons"><a
+                    href="https://wa.me/254705832449?text=Hello%2C%20I%20would%20like%20to%20request%20credentials%20for%20ALPHA%20Analysis%20Tool"
+                    class="credentials-btn" id="waMessenger"><i class="fab fa-whatsapp"></i> Get credentials $70 (launch
+                    special) · WhatsApp</a></div>
+            <a href="/api/affiliate/deriv" target="_blank" rel="noopener noreferrer" class="deriv-affiliate-btn"
+                data-track="join-deriv-click">
+                <i class="fas fa-chart-line"></i>
+                <span>Join Deriv</span>
+                <small>start smart trading </small>
+            </a>
+            <div class="error-message" id="errorMessage"><i class="fas fa-exclamation-triangle"></i> <span
+                    id="errorText">Invalid credentials or unchecked terms.</span></div>
+            <div class="login-footer">
+                <p><i class="far fa-id-card"></i> New users require credentials to login</p>
+            </div>
+        </div>
+        <!-- Terms Modal -->
+        <div id="termsModal" class="modal-overlay">
+            <div class="modal-container">
+                <h3><i class="fas fa-file-contract"></i> Terms of Service</h3>
+                <div class="modal-body">
+                    <p><strong>Acceptance of Terms</strong> – By accessing ALPHA ANALYSIS TOOL, you agree to be
+                        bound by
+                        these Terms. If you do not agree, please do not use the Service.</p>
+                    <p><strong>Eligibility</strong> – You must be at least 18 years old to use the Service.</p>
+                    <p><strong>No Financial Advice</strong> – Predictions are for informational purposes only. Trading
+                        binary options involves substantial risk. Past performance does not guarantee future results.
+                    </p>
+                    <p><strong>Prohibited Use</strong> – You may not reverse-engineer our algorithms or use the Service
+                        for illegal activities.</p>
+                    <p><strong>Limitation of Liability</strong> – ALPHA inc shall not be liable for any trading
+                        losses.</p>
+                </div>
+                <div class="modal-buttons"><button class="btn-submit" id="closeTermsModal">Close</button></div>
+            </div>
+        </div>
+
+        <!-- Privacy Modal -->
+        <div id="privacyModal" class="modal-overlay">
+            <div class="modal-container">
+                <h3><i class="fas fa-lock"></i> Privacy Policy</h3>
+                <div class="modal-body">
+                    <p><strong>Data Collected</strong> – We collect only username, website password, chat messages, and
+                        trading preferences. We do NOT collect email addresses.</p>
+                    <p><strong>Data Use</strong> – Your data is used solely to operate the Service. We do not sell or
+                        share your data with third parties.</p>
+                    <p><strong>Data Security</strong> – Passwords are secure, and all transmissions are encrypted via
+                        TLS.</p>
+                    <p><strong>User Rights</strong> – You may delete your account and all associated data at any time
+                        via the Account page.</p>
+                </div>
+                <div class="modal-buttons"><button class="btn-submit" id="closePrivacyModal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MAIN APPLICATION ========== -->
+    <div id="appContainer" class="app-container" style="display: none;">
+        <header class="app-header">
+            <div class="header-left"><button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
+                <div class="logo"><span class="brand">ALPHA ANALYSIS TOOL</span></div><span class="slogan">Digits
+                    analysis &amp; AI insights</span>
+            </div>
+            <div class="header-right"><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i>
+                    <span class="logout-text">Logout</span></button>
+                <div class="current-time" id="currentTime">00:00:00</div>
+            </div>
+        </header>
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i> <span
+                        class="nav-text">Dashboard</span></a>
+                <a href="#" class="nav-item" data-page="analysis"><i class="fas fa-chart-line"></i> <span
+                        class="nav-text">Analysis</span></a>
+                <a href="#" class="nav-item" data-page="settings"><i class="fas fa-cog"></i> <span
+                        class="nav-text">Settings</span></a>
+                <a href="#" class="nav-item" data-page="help"><i class="fas fa-question-circle"></i> <span
+                        class="nav-text">Help & Info</span></a>
+                <a href="#" class="nav-item" data-page="resources"><i class="fas fa-book"></i> <span
+                        class="nav-text">Resources</span></a>
+                <a href="#" class="nav-item" data-page="research"><i class="fas fa-flask"></i> <span
+                        class="nav-text">Research</span></a>
+                <a href="#" class="nav-item" data-page="ai"><i class="fas fa-robot"></i> <span
+                        class="nav-text">AI</span></a>
+                <a href="#" class="nav-item" data-page="about"><i class="fas fa-info-circle"></i> <span
+                        class="nav-text">About</span></a>
+                <a href="#" class="nav-item" data-page="contact"><i class="fas fa-envelope"></i> <span
+                        class="nav-text">Contact</span></a>
+                <a href="#" class="nav-item" data-page="terms"><i class="fas fa-file-contract"></i> <span
+                        class="nav-text">Terms</span></a>
+                <a href="#" class="nav-item" data-page="account"><i class="fas fa-user"></i> <span
+                        class="nav-text">Account</span></a>
+            </nav>
+            <div class="user-card"><i class="fas fa-user-circle user-avatar"></i>
+                <div class="user-details">
+                    <p class="user-name" id="loggedInUserName">Cris Analyst</p>
+                    <p class="user-badge">Premium Member</p>
+                    <p class="login-time" id="loginTimeDisplay"></p>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content" id="mainContent">
+
+            <!-- DASHBOARD -->
+            <section id="dashboard" class="page active">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-pie"></i> Trading analytics</h1>
+                    <div class="ai-badge">AI-assisted</div>
+                </div>
+
+                <!-- PRICE PANEL -->
+                <div class="price-panel">
+                    <div class="current-price">
+                        <span class="price-label">Current Price:</span>
+                        <span class="price-value" id="currentPrice">-</span>
+                    </div>
+                    <div class="last-digit-highlight">
+                        <span class="digit-label">Last Digit:</span>
+                        <span class="last-digit" id="lastDigitDisplay">-</span>
+                    </div>
+                </div>
+                <div class="eo-pattern-block">
+                    <div class="eo-title">Even/Odd Pattern (last 10)</div>
+                    <div class="eo-sequence" id="eoSequence"></div>
+                    <div class="eo-prediction" id="eoPrediction"></div>
+                </div>
+                <div class="params-grid">
+                    <div class="param-card"><label>Market</label><select disabled>
+                            <option>Derived</option>
+                        </select></div>
+                    <div class="param-card"><label>Index</label><select class="select">
+                            <option class="option">Continuous Indices</option>
+                        </select></div>
+                    <div class="param-card"><label>Volatility</label><select class="select" id="volatilitySelect">
+                            <option class="option">Volatility 10 (1s)</option>
+                            <option class="option">Volatility 10</option>
+                            <option class="option">Volatility 15 (1s)</option>
+                            <option class="option">Volatility 25 (1s)</option>
+                            <option class="option">Volatility 25</option>
+                            <option class="option">Volatility 30 (1s)</option>
+                            <option class="option">Volatility 50 (1s)</option>
+                            <option class="option">Volatility 50</option>
+                            <option class="option">Volatility 75 (1s)</option>
+                            <option class="option">Volatility 75</option>
+                            <option class="option">Volatility 90</option>
+                            <option class="option">Volatility 100 (1s)</option>
+                            <option class="option">Volatility 100</option>
+                        </select></div>
+                    <div class="param-card"><label>Candle</label><select class="select">
+                            <option class="option">1 minute</option>
+                        </select></div>
+                    <div class="param-card"><label>Tick duration</label><input type="number" class="tick-input"
+                            value="1" min="1" placeholder="1"></div>
+                </div>
+                <div class="trade-type-bar"><button class="trade-btn" data-type="matches">Matches</button><button
+                        class="trade-btn" data-type="differs">Differs</button><button class="trade-btn"
+                        data-type="even">Even</button><button class="trade-btn" data-type="odd">Odd</button><button
+                        class="trade-btn" data-type="over">Over</button><button class="trade-btn"
+                        data-type="under">Under</button></div>
+                <div class="analyze-wrapper"><button class="analyze-btn" id="analyzeBtn"><i
+                            class="fas fa-chart-simple"></i> Analyze Digits</button></div>
+                <div class="auto-refresh-wrapper"><label class="auto-refresh-label"><input type="checkbox"
+                            id="autoRefreshCheckbox"> Auto‑refresh</label><select id="refreshIntervalSelect"
+                        class="refresh-interval">
+                        <option value="1" selected>1 sec</option>
+                        <option value="2">2 sec</option>
+                        <option value="3">3 sec</option>
+                    </select></div>
+                <div class="prediction-panel">
+                    <div class="digit-circle" id="predictedDigit"><span class="big-digit">-</span><span
+                            class="digit-label">AI Prediction</span><span class="trade-condition"
+                            id="tradeCondition"></span></div>
+                    <div class="pie-container"><canvas id="pieChart" width="180" height="180"></canvas>
+                        <div class="pie-legend"><span><span class="legend-dot" style="background:#4a00e0;"></span> Win
+                                Probability</span><span><span class="legend-dot" style="background:#8e2de2;"></span>
+                                Payout</span></div>
+                    </div>
+                </div>
+                <div id="analysisInfo" class="analysis-info">
+                    <p><strong>Last analysis:</strong> <span id="lastAnalysisResult">—</span></p>
+                </div>
+                <div class="charts-row">
+                    <div class="frequency-card">
+                        <h3>Digit Frequency</h3><canvas id="barChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="algo-card">
+                        <h3>Algorithm Confidence</h3>
+                        <div class="algo-bars">
+                            <div class="algo-item"><span>ML Model</span>
+                                <div class="progress">
+                                    <div class="progress-fill" style="width:92%"></div>
+                                </div><span class="algo-value">92%</span>
+                            </div>
+                            <div class="algo-item"><span>Pattern Recognition</span>
+                                <div class="progress">
+                                    <div class="progress-fill" style="width:88%"></div>
+                                </div><span class="algo-value">88%</span>
+                            </div>
+                            <div class="algo-item"><span>Risk Assessment</span>
+                                <div class="progress">
+                                    <div class="progress-fill" style="width:95%"></div>
+                                </div><span class="algo-value">95%</span>
+                            </div>
+                            <div class="algo-item"><span>Market Sentiment</span>
+                                <div class="progress">
+                                    <div class="progress-fill" style="width:90%"></div>
+                                </div><span class="algo-value">90%</span>
+                            </div>
+                            <div class="algo-item"><span>Neural Network</span>
+                                <div class="progress">
+                                    <div class="progress-fill" style="width:93%"></div>
+                                </div><span class="algo-value">93%</span>
+                            </div>
+                            <div class="algo-item"><span>Deep Learning</span>
+                                <div class="progress">
+                                    <div class="progress-fill" style="width:91%"></div>
+                                </div><span class="algo-value">91%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ANALYSIS -->
+            <section id="analysis" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-line"></i> Real‑time Scatter Analysis</h1><span
+                        class="live-badge">LIVE</span>
+                </div>
+                <div class="scatter-container"><canvas id="scatterChart" width="800" height="350"></canvas></div>
+                <p class="analysis-note">Scatter shows confidence distribution across recent ticks.
+                </p>
+                <div class="scatter-controls"><button class="scatter-refresh">Refresh Now</button><span>Last update:
+                        <span id="scatter-time">just now</span></span></div>
+                <p class="analysis-note">Model settings.</p>
+                <div class="scatter-controls"><select class="select" name="Parameters" id="Parameters">
+                        <option class="option" value="">Default model</option>
+                    </select></div>
+            </section>
+
+            <!-- SETTINGS -->
+            <section id="settings" class="page">
+                <h2><i class="fas fa-cog"></i> Settings</h2>
+                <div class="settings-grid">
+                    <div class="setting-item"><label><i class="fas fa-palette"></i> Theme</label><select class="select"
+                            id="themeSelect">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                            <option value="system">System</option>
+                        </select></div>
+                    <div class="setting-item"><label><i class="fas fa-globe"></i> Time Zone</label><select
+                            class="select">
+                            <option>Auto-Detect</option>
+                            <option>UTC+0 (London)</option>
+                            <option>UTC+1 (Berlin)</option>
+                            <option>UTC-5 (NY)</option>
+                            <option>UTC+3 (Nairobi)</option>
+                            <option>UTC+8 (Singapore)</option>
+                            <option>UTC-8 (LA)</option>
+                        </select></div>
+                    <div class="setting-item"><label><i class="fas fa-database"></i> Data Source</label><select
+                            class="select">
+                            <option>Live (Derived)</option>
+                            <option>Historical (For Backtesting)</option>
+                            <option value="indicators">Binary Indicators</option>
+                        </select></div>
+                    <div class="setting-item"><label><i class="fas fa-bell"></i> Notifications</label><input
+                            type="checkbox"> Enable alerts<br><input type="checkbox"> Push Notifications<br><input
+                            type="checkbox"> AI predictions<br><input type="checkbox"> System updates</div>
+                    <div class="setting-item"><label><i class="fas fa-chart-bar"></i> Chart Refresh Rate</label><select
+                            class="select">
+                            <option>5 seconds</option>
+                            <option>10 seconds</option>
+                            <option>30 seconds</option>
+                            <option>1 minute</option>
+                        </select></div>
+                    <div class="setting-item">
+                        <label><i class="fas fa-chart-bar"></i> Frequency Analysis Window</label>
+                        <div class="param-slider">
+                            <label>Ticks to analyze (10-200)</label>
+                            <input type="range" id="freqWindowSlider" min="10" max="200" step="5" value="20">
+                            <span id="freqWindowValue">20 ticks</span>
+                        </div>
+                        <p class="setting-note">How many recent ticks to use for digit analysis.</p>
+                    </div>
+                    <div class="setting-item"><label><i class="fas fa-language"></i> Language</label><select
+                            class="select">
+                            <option>English (Default)</option>
+                            <option>Spanish</option>
+                            <option>French</option>
+                        </select></div>
+                    <div class="setting-item"><label><i class="fas fa-waveform"></i>Model Parameters</label>
+                        <div class="param-slider"><label>Wave Frequency (0.5 - 5.0)</label><input type="range"
+                                id="waveFreq" min="0.5" max="5.0" step="0.1" value="2.0"><span
+                                id="waveFreqValue">2.0</span></div>
+                        <div class="param-slider"><label>Fermi Temperature (0.1 - 2.0)</label><input type="range"
+                                id="fermiTemp" min="0.1" max="2.0" step="0.05" value="0.8"><span
+                                id="fermiTempValue">0.8</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HELP -->
+            <section id="help" class="page">
+                <h2><i class="fas fa-question-circle"></i> Help & Resources</h2>
+                <h3>Get help to navigate through your trading experience</h3>
+                <div class="help-cards">
+                    <div class="help-card"><i class="fas fa-book-open"></i>
+                        <h3>User Guide</h3>
+                        <p>Complete walkthrough</p><a href="User Guide.pdf" target="_blank">Read</a>
+                    </div>
+                    <div class="help-card"><i class="fab fa-youtube"></i>
+                        <h3>Video Tutorials</h3>
+                        <p>Watch on YouTube</p><a href="youtube.com" target="_blank">Playlist</a>
+                    </div>
+                    <div class="help-card"><i class="fas fa-question"></i>
+                        <h3>ML FAQ</h3>
+                        <p>About neural networks</p><a href="ML FAQ.pdf" target="_blank">Explore</a>
+                    </div>
+                    <div class="help-card"><i class="fas fa-file-pdf"></i>
+                        <h3>Matches Strategy</h3>
+                        <p>PDF from experts</p><a href="Matches Strategy.pdf" target="_blank" id="pdfLink">Download
+                            PDF</a>
+                    </div>
+                    <div class="help-card"><i class="fas fa-file-pdf"></i>
+                        <h3>Advanced Strategies</h3>
+                        <p>Library of strategies</p><a href="Advanced Strategies.pdf" target="_blank">Download</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESOURCES -->
+            <section id="resources" class="page">
+                <h2><i class="fas fa-book"></i> Resources & eBooks</h2>
+                <div class="resource-list">
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Quantum Trading eBook<a
+                            href="Quantum Trading eBook.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Professional Quant Trading<a
+                            href="Professional Quant Trading.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Advanced ML in Finance<a
+                            href="Advanced ML in Finance.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Binary Options Strategies<a
+                            href="Binary Options Strategies.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Neural Networks for Trading<a
+                            href="Neural Networks for Trading.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Risk Management Guide<a
+                            href="Risk Management Guide.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Technical Analysis Bible<a
+                            href="Technical Analysis Bible.pdf" target="_blank"><button>view</button></a></div>
+                    <div class="resource-item"><i class="fas fa-file-pdf"></i> Algorithmic Trading Cookbook<a
+                            href="Algorithmic Trading Cookbook.pdf" target="_blank"><button>view</button></a></div>
+                </div>
+            </section>
+
+            <!-- RESEARCH -->
+            <section id="research" class="page">
+                <h2><i class="fas fa-flask"></i> Research & Documentation</h2>
+                <div class="help-cards" style="grid-template-columns: 1fr;">
+                    <div class="help-card" style="text-align:left;">
+                        <h3>Deriv Binary Options</h3>
+                        <p><strong>Matches vs. Differs</strong> - Matches predicts the same digit repeated, Differs
+                            predicts a different digit than the last result. Use Matches during strong momentum and
+                            Differs when the market is sideways or noisy.</p>
+                        <p><strong>Over vs. Under</strong> - Over forecasts digits above threshold 5, Under forecasts
+                            digits below threshold 5. Over is useful when momentum pushes prices higher; Under is useful
+                            in declining or mean-reverting conditions.</p>
+                        <p><strong>Even vs. Odd</strong> - Even targets digits 0,2,4,6,8 while Odd targets 1,3,5,7,9.
+                            This strategy is useful when there is symmetry or alternating patterns in the tick sequence.
+                        </p>
+                        <p>Risk note: Binary options can return fixed payouts but lose the full stake if the condition
+                            is not met. Always size positions and treat these trades as high-risk, high-reward
+                            opportunities.</p>
+                    </div>
+                    <div class="help-card" style="text-align:left;">
+                        <h3>Schrödinger Wave Equation</h3>
+                        <p>We conceptually map probability amplitude to each digit as a wave function Ψ. Volatility acts
+                            like potential energy, shaping the likelihood of each outcome.</p>
+                        <p>Time-dependent Schrödinger equation:</p>
+                        <pre
+                            style="background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 1rem; overflow-x: auto;">iℏ (∂Ψ/∂t) = Ĥ Ψ</pre>
+                        <p>In our model, <strong>waveFrequency</strong> controls oscillation behavior and
+                            <strong>fermiTemperature</strong> affects spread and uncertainty. The computeProbabilities
+                            method mimics wave collapse by normalizing the probability distribution and selecting the
+                            digit with highest amplitude.
+                        </p>
+                        <p>Equation mapping:</p>
+                        <ul style="color: var(--text-secondary);">
+                            <li>Ψ(digit, t) ↔ probability amplitude for each digit</li>
+                            <li>Ĥ ↔ quantum-inspired operator using volatility and frequency</li>
+                            <li>iℏ ∂Ψ/∂t ↔ time evolution of the digit probability distribution</li>
+                        </ul>
+                        <p>Our algorithm uses a combination of Fermi-Dirac weighting, wave interference, and
+                            normalization to model digital wave collapse. The final predicted digit is the state with
+                            the highest normalized probability.</p><a href="#" id="researchPdfLink"
+                            class="review-btn">Download Research PDF</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI PAGE -->
+            <section id="ai" class="page">
+                <div>
+                    <h2><i class="fas fa-robot"></i> ACE-RADICAL AI</h2>
+                    <div class="ai-header">
+                        <div class="ai-tabs"><button class="ai-tab active" data-tab="chat">Chat</button><button
+                                class="ai-tab" data-tab="history">History</button><button class="ai-tab"
+                                data-tab="pricing">Pricing</button><button class="ai-tab" data-tab="api">Get
+                                API</button><button class="ai-tab" data-tab="pro">ACE-RAD-PRO</button></div>
+                        <div class="ai-header-right" id="proBadge" style="display: none;"><i class="fas fa-crown"></i>
+                            PRO</div>
+                    </div>
+                </div>
+                <div class="ai-body">
+                    <div class="ai-tab-content active" id="chatTab">
+                        <div class="chat-container" id="chatContainer">
+                            <div class="chat-message bot"><span class="chat-avatar"><i
+                                        class="fas fa-robot"></i></span><span class="chat-text">Hello! I'm ACE-RADICAL.
+                                    Ask me about digits, volatility, strategies, or binary options.</span></div>
+                        </div>
+                        <div class="chat-input-area"><input type="text" id="chatInput"
+                                placeholder="Ask ACE-RADICAL..."><button id="chatSendBtn"><i
+                                    class="fas fa-paper-plane"></i></button></div>
+                    </div>
+                    <div class="ai-tab-content" id="historyTab">
+                        <div class="history-controls"><button id="clearAllHistoryBtn" class="review-btn">Clear All
+                                History</button></div>
+                        <div id="chatHistoryList" class="chat-history-list"></div>
+                    </div>
+                    <div class="ai-tab-content" id="pricingTab">
+                        <div class="pricing-cards">
+                            <div class="pricing-card">
+                                <h3>Free</h3>
+                                <p class="price">$0 / month</p>
+                                <ul>
+                                    <li>Basic chat</li>
+                                    <li>Limited predictions</li>
+                                    <li>No history</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-card pro">
+                                <h3>ACE-RAD-PRO</h3>
+                                <p class="price">$70 <span style="font-size:0.9rem; font-weight:500;">(launch
+                                        special)</span></p>
+                                <p
+                                    style="font-size:0.9rem; color: var(--text-secondary); margin-top:-0.5rem; margin-bottom:1rem;">
+                                    Regular price $100</p>
+                                <ul>
+                                    <li>Advanced quantum model</li>
+                                    <li>Unlimited history</li>
+                                    <li>Priority support</li>
+                                    <li>API access</li>
+                                </ul><button class="review-btn" id="upgradeProBtn">Upgrade to Pro</button>
+                            </div>
+                            <div class="pricing-card">
+                                <h3>API Access</h3>
+                                <p class="price">$50 / month</p>
+                                <ul>
+                                    <li>REST API</li>
+                                    <li>1000 requests/day</li>
+                                    <li>Documentation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ai-tab-content" id="apiTab">
+                        <form id="apiRequestForm">
+                            <div class="form-group"><label>Website/App Name</label><input type="text" id="apiWebsite"
+                                    required></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="apiEmail" required>
+                            </div>
+                            <div class="form-group"><label>Intended Use</label><textarea id="apiUse"
+                                    rows="3"></textarea></div><button type="submit" class="review-btn">Request API
+                                Key</button>
+                        </form>
+                        <div id="apiResponse" class="api-response"></div>
+                    </div>
+                    <div class="ai-tab-content" id="proTab">
+                        <div class="pro-content">
+                            <h3>ACE-RAD-PRO Features</h3>
+                            <p>With ACE-RAD-PRO, you get access to:</p>
+                            <ul>
+                                <li>Quantum-enhanced predictions</li>
+                                <li>Real-time market sentiment analysis</li>
+                                <li>Advanced charting tools</li>
+                                <li>Personalized trading strategies</li>
+                                <li>24/7 expert support</li>
+                            </ul>
+                            <p id="proStatus">You are currently on the Free plan. Upgrade to unlock full potential.</p>
+                            <button id="proAccessBtn" class="review-btn">Activate Pro</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT -->
+            <section id="about" class="page">
+                <h2><i class="fas fa-info-circle"></i> About ALPHA Analysis</h2>
+                <p>Where quantum-inspired algorithms meet deep learning. Our platform analyzes real‑time tick data to
+                    forecast binary option digits with high statistical confidence. We employ ensemble neural networks
+                    trained on years of volatility patterns.</p>
+                <p><em>Financial risk disclaimer:</em> Trading binary options carries significant risk. Past performance
+                    does not guarantee future results. Use this tool as part of a comprehensive strategy.</p>
+                <p><em>The future of tech:</em> We continuously integrate the latest AI research to refine predictions.
+                </p>
+                <p>Our team of quantitative analysts and machine learning engineers have developed proprietary models
+                    that adapt to changing market conditions. The ALPHA Digits Analysis Tool is the culmination of
+                    years of research in financial mathematics, deep learning, and high-frequency data processing. We
+                    believe in democratizing access to sophisticated trading analytics while maintaining the highest
+                    standards of transparency and education.</p>
+                <p>ALPHA is not just a tool; it's a paradigm shift in how retail traders approach binary
+                    options. By harnessing the power of artificial intelligence, we level the playing field and provide
+                    insights that were once only available to institutional traders. Join us on this journey to redefine
+                    the future of trading.</p>
+                <p>Our mission is to empower traders with actionable insights, reduce uncertainty, and promote
+                    responsible trading through education and advanced analytics. We are committed to continuous
+                    improvement and innovation.</p>
+            </section>
+
+            <!-- CONTACT -->
+            <section id="contact" class="page">
+                <h2><i class="fas fa-envelope"></i> Contact</h2>
+                <div class="contact_page">
+                    <div class="contact-info">
+                        <p><i class="fas fa-user-tie"></i> Developer: AceDevOps Team</p>
+                        <p><i class="fas fa-user-tie"></i> Math Specialist: Cris GB</p>
+                        <p><i class="fas fa-envelope"></i> acedevops@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +254-705832449</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+                        <p><i class="fas fa-globe"></i> www.acedevops.org</p>
+                        <p><i class="fas fa-clock"></i> Support: 24/7</p>
+                        <p><i class="fas fa-paper-plane"></i> Telegram: @acedevops</p>
+                    </div>
+                    <div class="contact-info">
+                        <p>Send a message</p><input type="text" placeholder="Your name"><input type="email"
+                            placeholder="Your email"><input type="text" placeholder="Subject"><textarea
+                            placeholder="Message" rows="4"></textarea><button class="review-btn"
+                            onclick="showNotification('Message sent (coming soon)')">Send</button>
+                    </div>
+                    <div class="contact-info">
+                        <p><i class="fas fa-user-tie"></i> ALPHA Inc.</p>
+                        <p><i class="fas fa-envelope"></i> alpha@alphaanalytics.com</p>
+                        <p><i class="fas fa-phone"></i> +254-116573485</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+                        <p><i class="fas fa-globe"></i> www.alphaanalytics.org</p>
+                        <p><i class="fas fa-clock"></i> Support: 5AM-10PM</p>
+                        <p><i class="fas fa-paper-plane"></i> Telegram: @alphaanalytics</p>
+                    </div>
+                </div>
+                <div class="social-links-contact">
+                    <h3>Follow us</h3>
+                    <div class="social-icons"><a href="#" class="social-link" data-platform="twitter"><i
+                                class="fab fa-twitter"></i></a><a href="#" class="social-link"
+                            data-platform="instagram"><i class="fab fa-instagram"></i></a><a href="#"
+                            class="social-link" data-platform="telegram"><i class="fab fa-telegram"></i></a><a href="#"
+                            class="social-link" data-platform="tiktok"><i class="fab fa-tiktok"></i></a><a href="#"
+                            class="social-link" data-platform="whatsapp"><i class="fab fa-whatsapp"></i></a><a href="#"
+                            class="social-link" data-platform="linkedin"><i class="fab fa-linkedin"></i></a><a href="#"
+                            class="social-link" data-platform="youtube"><i class="fab fa-youtube"></i></a><a href="#"
+                            class="social-link" data-platform="github"><i class="fab fa-github"></i></a></div>
+                </div>
+            </section>
+
+            <!-- TERMS -->
+            <section id="terms" class="page">
+                <h2><i class="fas fa-file-contract"></i> Terms of Service & Privacy Policy</h2>
+
+                <h3>1. Terms of Use</h3>
+                <p><strong>Acceptance of Terms</strong> – By accessing or using ALPHA analysis tool (“the
+                    Service”), you
+                    agree to be bound by these Terms of Use. If you do not agree, please do not use the Service.</p>
+                <p><strong>Eligibility</strong> – You must be at least 18 years old to use the Service. By using ALPHA
+                    Digits, you represent that you are of legal age.</p>
+                <p><strong>User Accounts</strong> – You are responsible for maintaining the confidentiality of your
+                    username and password. You are solely responsible for all activities that occur under your account.
+                    You agree to notify us immediately of any unauthorised use.</p>
+                <p><strong>No Financial Advice</strong> – The predictions and analytics provided by ALPHA are
+                    for informational and educational purposes only. They do not constitute financial advice. Trading
+                    binary options involves substantial risk of loss. Past performance does not guarantee future
+                    results. You should consult a qualified financial advisor before making any trading decisions.</p>
+                <p><strong>Prohibited Use</strong> – You may not use the Service for any illegal activities, to
+                    manipulate markets, or to reverse‑engineer our algorithms. Any attempt to probe, scan, or test the
+                    vulnerability of the system is strictly forbidden.</p>
+                <p><strong>Intellectual Property</strong> – All content, code, and algorithms are the exclusive property
+                    of ALPHA. Unauthorised reproduction, redistribution, or reverse‑engineering is prohibited.
+                </p>
+                <p><strong>Limitation of Liability</strong> – ALPHA shall not be liable for any direct,
+                    indirect, incidental, or consequential losses arising from your use of the Service or your trading
+                    activities.</p>
+                <p><strong>Modifications</strong> – We reserve the right to modify these Terms at any time. Continued
+                    use of the Service after changes constitutes acceptance of the new Terms.</p>
+
+                <h3>2. Privacy Policy</h3>
+                <p><strong>Data We Collect</strong> – We collect only the information you provide directly:
+                    <strong>username, hashed password, chat messages, and trading preferences (e.g., trade type
+                        selections).</strong> We do <strong>not</strong> collect email addresses, real names, or payment
+                    information.
+                </p>
+                <p><strong>How We Use Data</strong> – Your data is used solely to operate the Service: authentication,
+                    storing chat history, personalising your settings (theme, model parameters), and improving our
+                    prediction algorithms. We do not sell, rent, or share your personal data with third parties.</p>
+                <p><strong>Data Security</strong> – Passwords are hashed using bcrypt. All data transmitted between your
+                    browser and our servers is encrypted with TLS. Access to databases is restricted to authorised
+                    personnel only.</p>
+                <p><strong>Cookies & Local Storage</strong> – We use essential localStorage to remember your session
+                    token (JWT) and UI preferences (e.g., theme). No tracking cookies are used.</p>
+                <p><strong>User Rights</strong> – You may request deletion of your account and all associated data at
+                    any time (via the Account page). Chat history can be cleared by you directly in the AI tab.</p>
+                <p><strong>Third‑Party Services</strong> – Our AI chat may use a third‑party API (DeepSeek) if you have
+                    a PRO account. Your chat messages are sent anonymously to DeepSeek for generating responses; no
+                    personally identifiable information is shared.</p>
+                <p><strong>Data Retention</strong> – We retain your account data for as long as your account is active.
+                    Deleted accounts are permanently removed from our database after 30 days (soft delete) unless you
+                    request immediate deletion.</p>
+                <p><strong>Contact Us</strong> – For any privacy concerns or data requests, please contact us at <a
+                        href="mailto:alpha@alphaanalytics.com">alpha@alphaanalytics.com</a>.</p>
+
+                <h3>3. Cookies & Local Storage</h3>
+                <p>We use localStorage to store your authentication token (JWT) and your theme preference. No external
+                    cookies are set. You can clear localStorage via your browser settings without affecting your account
+                    (you will need to log in again).</p>
+
+                <h3>4. Governing Law</h3>
+                <p>These Terms shall be governed by the laws of Kenya. Any disputes shall be resolved in the courts of
+                    Nairobi, Kenya.</p>
+
+                <p><em>Last updated: April 2026</em></p>
+            </section>
+
+            <!-- ACCOUNT -->
+            <section id="account" class="page">
+                <h2><i class="fas fa-user-circle"></i> Account</h2>
+                <div class="testimonials">
+                    <h3>Community Reviews</h3>
+                    <div class="testimonial">“Accuracy improved my trading significantly!” – Alex.</div>
+                    <div class="testimonial">“The AI explanations are top‑notch.” – Maria.</div>
+                    <div class="testimonial">“Best investment I ever made.” – John.</div>
+                    <div class="testimonial">“Customer support is excellent.” – Sarah.</div>
+                    <div class="testimonial">“I've been using this for 3 months, my win rate increased by 20%.” – Mike.
+                    </div>
+                </div>
+                <div id="techPartnerPanel" class="tech-partner-panel" style="display: none;">
+                    <div class="tech-partner-inner"><span class="tech-partner-badge"><i class="fas fa-code-branch"></i>
+                            Technical partner</span>
+                        <h3>Integration &amp; API</h3>
+                        <p class="tech-partner-lead">Manage your credentials below. Request API access or open
+                            documentation from here.</p>
+                        <div class="tech-partner-actions"><button type="button"
+                                class="tech-partner-btn tech-partner-btn-primary" id="techNavAiApi">Request API
+                                access</button><button type="button" class="tech-partner-btn tech-partner-btn-secondary"
+                                id="techNavHelp">Help &amp; documentation</button></div>
+                    </div>
+                </div>
+                <div id="accountRegular" class="account-role-view">
+                    <div class="account-card-grid">
+                        <div class="account-card">
+                            <p><strong>Username:</strong> <span id="accountUserName">Cris Analyst</span></p>
+                            <p><strong>Subscription:</strong> Premium (expires 2026-03-15)</p>
+                            <p><strong>Status:</strong> Active</p>
+                            <p><strong>Last login:</strong> <span id="lastLoginTime"></span></p>
+                            <div class="change-credentials">
+                                <h4>Change Credentials</h4><input type="text" id="newUsername"
+                                    placeholder="New username"><input type="password" id="currentPassword"
+                                    placeholder="Current password"><input type="password" id="newPassword"
+                                    placeholder="New password"><input type="password" id="confirmPassword"
+                                    placeholder="Confirm new password"><button id="updateCredentialsBtn"
+                                    class="review-btn">Update</button>
+                            </div><button class="review-btn" id="writeTestimonialBtn">Write a Testimonial</button>
+                        </div>
+                        <div class="account-card">
+                            <p><strong>Security</strong></p><button class="review-btn" id="changePasswordBtn">Change
+                                password</button><button class="review-btn" id="viewActivityBtn">View Activity
+                                log</button><button class="review-btn" id="exportDataBtn">Export Data</button><button
+                                class="review-btn" id="clearDataBtn">Clear Data</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="accountAdmin" class="account-role-view" style="display:none;">
+                    <div id="adminDashboardContainer"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Analyzing&hellip;</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

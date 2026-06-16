@@ -1,0 +1,8 @@
+{
+  "modelTopology": {
+    "training_config": {},
+    "keras_version": "2.8.0",
+    "model_config": {}
+  },
+  "weightsManifest": []
+}
