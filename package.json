@@ -2,7 +2,7 @@
   "name": "alpha",
   "version": "1.0.0",
   "description": "analysis tool",
-  "main": "script.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
