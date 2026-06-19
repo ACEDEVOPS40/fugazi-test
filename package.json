@@ -1,23 +1,21 @@
 {
   "name": "alpha",
-  "version": "1.0.0",
-  "description": "analysis tool",
+  "version": "2.0.0",
+  "description": "AI-powered trading analytics platform",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "seed": "node scripts/seed.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "jsonwebtoken": "^9.0.3",
-    "mongodb": "^7.3.0",
-    "uuid": "^14.0.0",
-    "vercel": "^54.14.0"
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.3.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "vercel": "^33.0.0"
   }
 }
