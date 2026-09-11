@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /$
+Allow: /index.html
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /account
+
+Sitemap: https://alphaanalysistool.site/sitemap.xml
